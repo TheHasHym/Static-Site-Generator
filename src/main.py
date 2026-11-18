@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 
 from textnode import TextNode, TextType
+from utils import extract_markdown_images, extract_markdown_links
 
 
 def main():
-    textnode = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
-    print(textnode)
+    text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+    print(extract_markdown_images(text))
+
+    text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+    print(extract_markdown_links(text))
 
 
 if __name__ == "__main__":
