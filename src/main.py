@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
 from textnode import TextNode, TextType
-from utils import extract_markdown_images, extract_markdown_links
+from utils import text_to_textnodes
 
 
 def main():
-    text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
-    print(extract_markdown_images(text))
-
-    text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
-    print(extract_markdown_links(text))
+    text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+    nodes = text_to_textnodes(text)
+    print(f"Original text: {text}")
+    print(f"Nodes: {nodes}")
 
 
 if __name__ == "__main__":
