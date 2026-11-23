@@ -1,18 +1,10 @@
 import unittest
 
+from split_node_utils import split_nodes_delimiter, split_nodes_image, split_nodes_link
 from textnode import TextNode, TextType
-from utils import (
-    extract_markdown_images,
-    extract_markdown_links,
-    markdown_to_blocks,
-    split_nodes_delimiter,
-    split_nodes_image,
-    split_nodes_link,
-    text_to_textnodes,
-)
 
 
-class TestUtils(unittest.TestCase):
+class TestSplitNodeUtils(unittest.TestCase):
     def test_split_nodes_delimiter_delim_bold(self):
         node = TextNode("This is text with a **bolded** word", TextType.PLAIN)
         new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
@@ -88,28 +80,6 @@ class TestUtils(unittest.TestCase):
             new_nodes,
         )
 
-    def test_extract_markdown_images(self):
-        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
-        matches = extract_markdown_images(text)
-        self.assertListEqual(
-            [
-                ("rick roll", "https://i.imgur.com/aKaOqIh.gif"),
-                ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg"),
-            ],
-            matches,
-        )
-
-    def test_extract_markdown_links(self):
-        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
-        matches = extract_markdown_links(text)
-        self.assertListEqual(
-            [
-                ("to boot dev", "https://www.boot.dev"),
-                ("to youtube", "https://www.youtube.com/@bootdotdev"),
-            ],
-            matches,
-        )
-
     def test_split_image(self):
         node = TextNode(
             "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)",
@@ -168,67 +138,6 @@ class TestUtils(unittest.TestCase):
                 TextNode(" with text that follows", TextType.PLAIN),
             ],
             new_nodes,
-        )
-
-    def test_text_to_textnodes(self):
-        nodes = text_to_textnodes("This is **text** with an _italic_ word and a `code block` and an ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://boot.dev)")
-        self.assertListEqual(
-            [
-                TextNode("This is ", TextType.PLAIN),
-                TextNode("text", TextType.BOLD),
-                TextNode(" with an ", TextType.PLAIN),
-                TextNode("italic", TextType.ITALIC),
-                TextNode(" word and a ", TextType.PLAIN),
-                TextNode("code block", TextType.CODE),
-                TextNode(" and an ", TextType.PLAIN),
-                TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
-                TextNode(" and a ", TextType.PLAIN),
-                TextNode("link", TextType.LINK, "https://boot.dev"),
-            ],
-            nodes,
-        )
-
-    def test_markdown_to_blocks(self):
-        md = """
-This is **bolded** paragraph
-
-This is another paragraph with _italic_ text and `code` here
-This is the same paragraph on a new line
-
-- This is a list
-- with items
-"""
-        blocks = markdown_to_blocks(md)
-        self.assertEqual(
-            blocks,
-            [
-                "This is **bolded** paragraph",
-                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
-                "- This is a list\n- with items",
-            ],
-        )
-
-    def test_markdown_to_blocks_newlines(self):
-        md = """
-This is **bolded** paragraph
-
-
-
-
-This is another paragraph with _italic_ text and `code` here
-This is the same paragraph on a new line
-
-- This is a list
-- with items
-"""
-        blocks = markdown_to_blocks(md)
-        self.assertEqual(
-            blocks,
-            [
-                "This is **bolded** paragraph",
-                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
-                "- This is a list\n- with items",
-            ],
         )
 
 
