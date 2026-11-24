@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from textnode import TextNode, TextType
-from utils import text_to_textnodes
+from textnode_utils import text_to_textnodes
 
 
 def main():
